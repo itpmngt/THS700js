@@ -1,9 +1,60 @@
 <html>
 <head>
 	<title>THS 700 JS</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="jquery-ui-1.9.2.custom.min.css">
+	<script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+	<script type="text/javascript" src="jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript" src="serial.js"></script>
 </head>
 <body>
 	<h3>THS700 Console</h3>
+	<div id="connection">
+		<table>
+		<tr><td>Serial Port: </td><td>
+			<select id="conn-port"></select>
+			<input type="text" name="port"></td></tr>
+		<tr><td>Baud rate: </td><td>
+			<div class="conn-box">
+				<input type="radio" name="baudrate" value="38400">38400<br/>
+				<input type="radio" name="baudrate" value="19200">19200<br/>
+				<input type="radio" name="baudrate" value="9600" checked>9600<br/>
+				<input type="radio" name="baudrate" value="4800">4800<br/>
+				<input type="radio" name="baudrate" value="2400">2400<br/>
+				<input type="radio" name="baudrate" value="1200">1200<br/>
+				<input type="radio" name="baudrate" value="600">600<br/>
+				<input type="radio" name="baudrate" value="300">300
+			</div></td></tr>
+		<tr><td>Data bits: </td><td>
+			<div class="conn-box">
+				<input type="radio" name="databits" value="8" checked>8
+			</div></td></tr>
+		<tr><td>EOL: </td><td>
+			<div class="conn-box">
+				<input type="radio" name="EOL" value="LF" checked>LF<br/>
+				<input type="radio" name="EOL" value="CR">CR<br/>
+				<input type="radio" name="EOL" value="LF_CR">LF/CR<br/>
+				<input type="radio" name="EOL" value="CR_LF">CR/LF<br/>
+			</div></td></tr>
+		<tr><td>Parity: </td><td>
+			<div class="conn-box">
+				<input type="radio" name="parity" value="none" checked>None<br/>
+				<input type="radio" name="parity" value="even">Even<br/>
+				<input type="radio" name="parity" value="odd">Odd<br/>
+			</div></td></tr>
+		<tr><td>Stop bits: </td><td>
+			<div class="conn-box">
+				<input type="radio" name="stopbits" value="1" checked>1<br/>
+				<input type="radio" name="stopbits" value="2">2<br/>
+			</div></td></tr>
+ 	</table>
+
+ 	<button id="conn-refresh">Refresh</button>
+ 	<button id="conn-connect">Connect</button>
+
+ </div>
+
+<div id="dialog-msg" title="Dialog"></div>
+<div id="dialog"></div>
 </body>
 </html>

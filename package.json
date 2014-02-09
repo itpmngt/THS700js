@@ -2,9 +2,14 @@
   "name": "THS700js",
   "version": "0.0.1",
   "main": "index.html",
+  "window": {
+    "width": 600,
+    "height": 800
+  },
   "description": "Javascript interface to communicate with a THS700 Tektronix handheld oscillospes",
   "dependencies": {
-    "serialport": "~1.3.1"
+    "serialport": "~1.3.1",
+    "jquery": "~2.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
