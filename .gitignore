@@ -17,3 +17,6 @@ node_modules
 references
 builds
 libs
+
+#ignore WebStorm config
+.idea
