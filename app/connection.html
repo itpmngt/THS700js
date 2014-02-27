@@ -1,0 +1,58 @@
+<div id="connection">
+    <div class="row">
+        <div class="span3">
+            Serial Port:<br/>
+            <select id="conn-port"></select><br/>
+            <input type="text" name="port">
+            <hr/>
+            Data bits: <br/>
+
+            <div class="conn-box">
+                <input type="radio" name="databits" value="8" checked>8
+            </div>
+        </div>
+        <div class="span3">
+            Baud rate: <br/>
+
+            <div class="conn-box">
+                <input type="radio" name="baudrate" value="38400">38400<br/>
+                <input type="radio" name="baudrate" value="19200">19200<br/>
+                <input type="radio" name="baudrate" value="9600" checked>9600<br/>
+                <input type="radio" name="baudrate" value="4800">4800<br/>
+                <input type="radio" name="baudrate" value="2400">2400<br/>
+                <input type="radio" name="baudrate" value="1200">1200<br/>
+                <input type="radio" name="baudrate" value="600">600<br/>
+                <input type="radio" name="baudrate" value="300">300
+            </div>
+        </div>
+        <div class="span3">
+            EOL: <br/>
+
+            <div class="conn-box">
+                <input type="radio" name="EOL" value="LF" checked>LF<br/>
+                <input type="radio" name="EOL" value="CR">CR<br/>
+                <input type="radio" name="EOL" value="LF_CR">LF/CR<br/>
+                <input type="radio" name="EOL" value="CR_LF">CR/LF<br/>
+            </div>
+            <hr/>
+            Parity: <br/>
+
+            <div class="conn-box">
+                <input type="radio" name="parity" value="none" checked>None<br/>
+                <input type="radio" name="parity" value="even">Even<br/>
+                <input type="radio" name="parity" value="odd">Odd<br/>
+            </div>
+            <hr/>
+            Stop bits: <br/>
+
+            <div class="conn-box">
+                <input type="radio" name="stopbits" value="1" checked>1<br/>
+                <input type="radio" name="stopbits" value="2">2<br/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button id="conn-refresh">Refresh</button>
+        <button id="conn-connect">Connect</button>
+    </div>
+</div>
