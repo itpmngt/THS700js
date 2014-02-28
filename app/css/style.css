@@ -1,4 +1,23 @@
-#connection table td {
-    vertical-align: top;
-    padding: 4px;
+a.navbar-brand {
+    padding: 5px;
+}
+
+.nav > li > a {
+    padding: 10px;
+}
+
+.navbar {
+    min-height: 36px;
+}
+
+#connection {
+    margin: 20px;
+}
+
+#banner {
+    margin: 20px;
+}
+
+#banner-img {
+    margin-left: 25%;
 }

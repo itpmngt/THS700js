@@ -5,6 +5,11 @@ angular.module('THS700app', ['ngRoute', 'ngAnimate'],
       controller: connectionCntrll
     });
 
+    $routeProvider.when('/', {
+      templateUrl: 'banner.html',
+      controller: bannerCntrll
+    });
+
     // configure html5 to get links working on jsfiddle
     $locationProvider.html5Mode(true);
   });
@@ -13,15 +18,11 @@ function MainCntl($route, $routeParams, $location) {
   this.$route = $route;
   this.$location = $location;
   this.$routeParams = $routeParams;
-}
 
-
-function serialCntrll($scope) {
-  $scope.main = { title: 'THS700 Console',
-    logoURL: 'images/THS700_banner.png' }
-}
-
-function connectionCntrll($scope) {
-  $scope.main = { title: 'THS700 Console',
-    logoURL: 'images/THS700_banner.png' }
+  console.log('$route');
+  console.log($route);
+  console.log('$routeParams');
+  console.log($routeParams);
+  console.log('$location');
+  console.log($location);
 }
