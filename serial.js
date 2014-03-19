@@ -3,9 +3,10 @@ console.log('THS700 Console');
 
 var com = require("serialport");
 
-var T = {}; // global
+T = {}; // global
 T.conn = { port: "COM4", baudrate: 9600, databits: 8, stopbits: 1, parity: 'none', parser: com.parsers.raw };
 T.msg = 'Error text';
+T.ports = [];
 
 $(function () {
   $("#dialog-msg").dialog({
@@ -36,6 +37,7 @@ $(function () {
         console.log('Error: ' + T.msg);
       }
       else {
+        T.ports = ports;
         ports.forEach(function (port) {
           console.log('Ports available:');
           console.log(' ' + port.comName + ' - ' + port.pnpId + ' - ' + port.manufacturer);

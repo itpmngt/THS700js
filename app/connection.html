@@ -1,11 +1,10 @@
+
 <div id="connection">
-  <h2>Connection</h2>
-  Serial Port:<br/>
-  <select id="conn-port"></select><br/>
-  <input type="text" name="port">
+  <h2>Connection:</h2>
+  Serial Port: <select id="conn-port"></select><br/>
 
   <div class="row">
-    <div class="col-md-2">
+    <div class="span2">
 
       <h4>Baud rate:</h4>
 
@@ -14,19 +13,14 @@
       </p>
 
     </div>
-    <div class="col-md-2">
-
-      <h4>Flow Control</h4>
-
-      <p><input type="checkbox" name="ctsrts" ng-model="defaults.ctsrts" value="{{defaults.ctsrts}}"> CTS-RTS</p>
-
-      <p><input type="checkbox" name="xonxoff" ng-model="defaults.xonxoff" value="{{defaults.xonxoff}}"> Xon-Xoff</p>
+    <div class="span2">
 
       <h4>Parity:</h4>
-
       <p ng-repeat="parity in parities">
         <input type="radio" name="parity" ng-model="defaults.parity" value="{{parity.value}}"/> {{parity.label}}
       </p>
+
+      <h4>&nbsp;</h4>
 
       <h4>Stop bits:</h4>
 
@@ -35,7 +29,16 @@
       </p>
 
     </div>
-    <div class="col-md-2">
+    <div class="span2">
+
+      <h4>Flow Control</h4>
+
+      <p><input type="checkbox" name="ctsrts" ng-model="defaults.rtscts" value="{{defaults.rtscts}}"> CTS-RTS</p>
+
+      <p><input type="checkbox" name="xonxoff" ng-model="defaults.xonxoff" value="{{defaults.xonxoff}}"> Xon-Xoff</p>
+
+      <h4>&nbsp;</h4>
+
       <h4>End Of Line:</h4>
 
       <p ng-repeat="EOL in EOLS">
@@ -44,7 +47,9 @@
     </div>
   </div>
   <div class="row">
-    <button id="conn-refresh">Refresh</button>
-    <button id="conn-connect" ng-click="showValues()">Connect</button>
+    <button id="conn-refresh" ng-click="getPorts()">Refresh</button>
+    <button id="conn-connect" ng-click="connect()">Connect</button>
+    <button id="conn-getID" ng-click="getID()">Get ID</button>
   </div>
+  <div class="row"><p id="tekID"></p></div>
 </div>
