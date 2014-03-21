@@ -1,15 +1,49 @@
-T = {}; // global THS700
-T.serialport = require("serialport");
-// databits for THS700 is only value 8
-T.settings = {baudrate: 9600, parity: "none", databits: 8, xonxoff: false, rtscts: true, stopbits: 1, EOL: "LF", parser: T.serialport.parsers.raw};
-// T.conn = {};
-T.data = '';
+T = {             // global THS700
+  settings: {
+    baudrate: 9600,
+    parity: "none",
+    databits: 8,      // databits for THS700 is value 8 only
+    xonxoff: false,   // in reality 3 options: xon, xoff, xany
+    rtscts: true,
+    stopbits: 1,
+    EOL: "LF" }, // LF, CR, LF_CR, CR_LF - maybe use unicode
+  data: '',       // data holder
+  EOL: '\u000A'         // EOL character LF=\u000A CR=\u000D
+}; 
+T.serialport = require("serialport"); // import serialport
+T.settings.parser = T.serialport.parsers.raw; // default parser
 T.getID = function() {
   // Check if T.connb exists
   T.data=''; // Data comes in chunks
   T.conn.write("ID?\r\n", function (err, results) {
     if (err) { alert(err) } }); 
 }
+
+T.connect = function(port) {
+  // if (T.settings.EOL=="LF"){ T.EOL = '\u000A' }
+  // else if (T.settings.EOL=="CR"){ T.EOL = '\u000D' }
+  // else if (T.settings.EOL=="LF_CR"){ T.EOL = '\u000A\u000D' }
+  // else if (T.settings.EOL=="CR_LF"){ T.EOL = '\u000D\u000A' }
+  // else { console.log('Error: Missing EOL')} // Maybe alert
+  T.conn = new T.serialport.SerialPort(port, T.settings, false);
+  T.conn.open(function () {
+    console.log('Serial port open at '+port);
+    T.conn.on('error', function (err) { alert('Error: ' + err) });
+    console.log('Before T.conn.on.close');
+    T.conn.on('close', function(err) { console.log('Serialport closed!!!') });
+    console.log('Before T.conn.on.data');
+    T.conn.on('data', function (data){
+      console.log('data: '+data); // characters
+      // console.log(data); // raw
+      T.data += data;  // Data comes in chunks
+      if(T.data.indexOf(T.EOL) != -1){
+        console.log('data: '+T.data); // characters
+        $('#tekID').html(T.data); }
+    });
+    console.log('Before T.getID');
+    T.getID();
+  });
+};
 
 
 function connectionCntrll($scope) {
@@ -43,28 +77,28 @@ function connectionCntrll($scope) {
   ];
   $scope.showValues = function () {alert(JSON.stringify(this.defaults))};
   $scope.getPorts = function (){
+    $('#conn-port').empty();
     T.serialport.list(function (err, ports) {
-      if (err) { alert('Error: ' + err); }
+      if (err) { alert(err); }
       else {
-        console.log('Ports available:');
         ports.forEach(function (port) {
-          console.log(' ' + port.comName + ' - ' + port.pnpId + ' - ' + port.manufacturer);
           $('#conn-port').append($('<option>', { value: port.comName }).text(port.comName));
-        }) } }) };
+  }) } }) };
 
   $scope.connect = function() {
-    if (T.conn){T.conn.close();}
-    T.conn = new T.serialport.SerialPort($('#conn-port :selected').text(), this.defaults, false);
-    T.conn.open(function () {
-      // alert('Connected');
-      T.conn.on('error', function (err) { alert('Error: ' + err) });
-      T.conn.on('data', function (data){
-        // console.log(data); // raw
-        // alert('data: ' + data); // characters
-        T.data = T.data + data;  // Data comes in chunks
-        $('#tekID').html(T.data);
-      });
-      T.getID();
-    });
+    // Should send the port as a variable -- check if port is not null
+    var port = $('#conn-port :selected').text();
+    T.settings = this.defaults;
+    if (T.conn){ T.conn.close( function(err){ // close port if is open
+      if (err) { alert(err) }
+      else {
+
+        console.log(port);
+        T.conn = null;
+        delete T.conn;
+        console.log('reopening');
+        T.connect(port) } }) }
+    else  { T.connect(port) }
   };
+
 }
