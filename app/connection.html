@@ -9,7 +9,7 @@
       <h4>Baud rate:</h4>
 
       <p ng-repeat="baudrate in baudrates">
-        <input type="radio" name="baudrate" ng-model="defaults.baudrate" value="{{baudrate.value}}"/> {{baudrate.label}}
+        <input type="radio" name="baudRate" ng-model="defaults.baudRate" value="{{baudRate.value}}"/> {{baudrate.label}}
       </p>
 
     </div>
@@ -24,8 +24,8 @@
 
       <h4>Stop bits:</h4>
 
-      <p ng-repeat="stopbit in stopbits">
-        <input type="radio" name="stopbits" ng-model="defaults.stopbits" value="{{stopbit.value}}"/> {{stopbit.label}}
+      <p ng-repeat="stopbit in stopBits">
+        <input type="radio" name="stopBits" ng-model="defaults.stopBits" value="{{stopBits.value}}"/> {{stopbit.label}}
       </p>
 
     </div>
@@ -45,11 +45,19 @@
         <input type="radio" name="EOL" ng-model="defaults.EOL" value="{{EOL.value}}"/> {{EOL.label}}
       </p>
     </div>
+    <div class="span2">
+      <button onclick='T.write("ID?\n")'>Get TEK ID</button><br />
+      <button onclick='T.write("*IDN?\n")'>Get GPIB ID</button><br />
+      <button onclick='T.write("RS232?\n")'>Get RS232</button>
+      <button onclick='T.write("RS232:BAUd?\n")'>Get Baudrate</button>
+      <button onclick='T.write("RS232:CONTROl:RTS?\n")'>RTS / CTS</button>
+      <button onclick='T.write("RS232:HARDFlagging?\n")'>HARD flagging</button>
+    </div>
   </div>
   <div class="row">
     <button id="conn-refresh" ng-click="getPorts()">Refresh</button>
     <button id="conn-connect" ng-click="connect()">Connect</button>
-    <button id="conn-getID" onclick="T.getID()">Get ID</button>
+    <button id="conn-close" ng-click="close()">Close</button>
   </div>
-  <div class="row"><p id="tekID"></p></div>
+  <div class="row"><textarea id="tekConsole" rows="8" cols="200"></textarea></div>
 </div>

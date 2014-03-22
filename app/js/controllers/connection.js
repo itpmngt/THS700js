@@ -1,47 +1,37 @@
-T = {             // global THS700
+T = {               // global THS700
   settings: {
-    baudrate: 9600,
-    parity: "none",
-    databits: 8,      // databits for THS700 is value 8 only
-    xonxoff: false,   // in reality 3 options: xon, xoff, xany
-    rtscts: true,
-    stopbits: 1,
-    EOL: "LF" }, // LF, CR, LF_CR, CR_LF - maybe use unicode
-  data: '',       // data holder
-  EOL: '\u000A'         // EOL character LF=\u000A CR=\u000D
+    baudRate: 9600,   // 300 to 38400
+    dataBits: 8,      // databits for THS700 are value 8 only
+    stopBits: 1,      // 1 or 2
+    parity: "none",   // none, odd, even
+    xonxoff: false,   // Softflagging in reality 3 options: xon, xoff, xany
+    rtscts: true,     // Hardflagging
+    delay: 0,         // 0s to 60s in 100ms increments
+    EOL: "LF" },      // LF, CR, LF_CR, CR_LF - maybe use unicode
+  data: '',           // data holder
+  encoding: 'ascii',  // ascii utf8 utf16le ucs2 base64 binary hex
+  EOL: '\n'           // EOL character LF=\n CR=\r
 }; 
 T.serialport = require("serialport"); // import serialport
-T.settings.parser = T.serialport.parsers.raw; // default parser
-T.getID = function() {
+T.write = function(instruction) {
   // Check if T.connb exists
-  T.data=''; // Data comes in chunks
-  T.conn.write("ID?\r\n", function (err, results) {
+  // T.buffer=''; // Data comes in chunks
+  T.conn.write(instruction, function (err, results) {
     if (err) { alert(err) } }); 
 }
 
-T.connect = function(port) {
-  // if (T.settings.EOL=="LF"){ T.EOL = '\u000A' }
-  // else if (T.settings.EOL=="CR"){ T.EOL = '\u000D' }
-  // else if (T.settings.EOL=="LF_CR"){ T.EOL = '\u000A\u000D' }
-  // else if (T.settings.EOL=="CR_LF"){ T.EOL = '\u000D\u000A' }
-  // else { console.log('Error: Missing EOL')} // Maybe alert
-  T.conn = new T.serialport.SerialPort(port, T.settings, false);
+T.connect = function() {
+  // T.settings.parser = T.serialport.parsers.raw; // default parser
+  T.settings.parser = T.serialport.parsers.readline(T.EOL, T.encoding); // default parser
+  T.conn = new T.serialport.SerialPort(T.settings.port, T.settings, false);
   T.conn.open(function () {
-    console.log('Serial port open at '+port);
+    console.log('Serial port open at '+T.settings.port);
     T.conn.on('error', function (err) { alert('Error: ' + err) });
-    console.log('Before T.conn.on.close');
     T.conn.on('close', function(err) { console.log('Serialport closed!!!') });
-    console.log('Before T.conn.on.data');
-    T.conn.on('data', function (data){
-      console.log('data: '+data); // characters
-      // console.log(data); // raw
-      T.data += data;  // Data comes in chunks
-      if(T.data.indexOf(T.EOL) != -1){
-        console.log('data: '+T.data); // characters
-        $('#tekID').html(T.data); }
-    });
+    T.conn.on('data', function (buffer){
+      $('#tekConsole').val($('#tekConsole').val() + "\n" + buffer); });
     console.log('Before T.getID');
-    T.getID();
+    T.write("ID?\n");
   });
 };
 
@@ -85,20 +75,25 @@ function connectionCntrll($scope) {
           $('#conn-port').append($('<option>', { value: port.comName }).text(port.comName));
   }) } }) };
 
+  $scope.close = function() {
+    T.conn.close( function(err){ // close port if is open
+      if (err) { alert(err) }
+      else { console.log('Closing: ' + T.settings.port); } }) }
+
   $scope.connect = function() {
     // Should send the port as a variable -- check if port is not null
-    var port = $('#conn-port :selected').text();
     T.settings = this.defaults;
+    T.settings.port = $('#conn-port :selected').text();
+    // console.log(T.settings);
     if (T.conn){ T.conn.close( function(err){ // close port if is open
       if (err) { alert(err) }
       else {
-
-        console.log(port);
-        T.conn = null;
-        delete T.conn;
-        console.log('reopening');
-        T.connect(port) } }) }
-    else  { T.connect(port) }
+        console.log('Closing: ' + T.settings.port);
+        // T.conn = null;
+        // delete T.conn;
+        // console.log('reopening');
+        T.connect() } }) }
+    else  { T.connect() }
   };
 
 }
