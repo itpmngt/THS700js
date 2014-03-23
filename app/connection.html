@@ -1,7 +1,9 @@
 
 <div id="connection">
   <h2>Connection:</h2>
-  Serial Port: <select id="conn-port"></select><br/>
+  Serial Port: <select id="conn-port"></select>
+  <button id="conn-refresh" ng-click="getPorts()">Refresh</button>
+  <br/>
 
   <div class="row">
     <div class="span2">
@@ -9,7 +11,7 @@
       <h4>Baud rate:</h4>
 
       <p ng-repeat="baudrate in baudrates">
-        <input type="radio" name="baudRate" ng-model="defaults.baudRate" value="{{baudRate.value}}"/> {{baudrate.label}}
+        <input type="radio" name="baudRate" ng-model="settings.baudRate" value="{{baudrate.value}}"/> {{baudrate.label}}
       </p>
 
     </div>
@@ -17,15 +19,15 @@
 
       <h4>Parity:</h4>
       <p ng-repeat="parity in parities">
-        <input type="radio" name="parity" ng-model="defaults.parity" value="{{parity.value}}"/> {{parity.label}}
+        <input type="radio" name="parity" ng-model="settings.parity" value="{{parity.value}}"/> {{parity.label}}
       </p>
 
       <h4>&nbsp;</h4>
 
       <h4>Stop bits:</h4>
 
-      <p ng-repeat="stopbit in stopBits">
-        <input type="radio" name="stopBits" ng-model="defaults.stopBits" value="{{stopBits.value}}"/> {{stopbit.label}}
+      <p ng-repeat="stopbit in stopbits">
+        <input type="radio" name="stopBits" ng-model="settings.stopBits" value="{{stopbit.value}}"/> {{stopbit.label}}
       </p>
 
     </div>
@@ -33,29 +35,28 @@
 
       <h4>Flow Control</h4>
 
-      <p><input type="checkbox" name="ctsrts" ng-model="defaults.rtscts" value="{{defaults.rtscts}}"> CTS-RTS</p>
+      <p><input type="checkbox" name="rtscts" ng-model="settings.rtscts" value="{{settings.rtscts}}"> RTS-CTS</p>
 
-      <p><input type="checkbox" name="xonxoff" ng-model="defaults.xonxoff" value="{{defaults.xonxoff}}"> Xon-Xoff</p>
+      <p><input type="checkbox" name="xonxoff" ng-model="settings.xonxoff" value="{{settings.xonxoff}}"> Xon-Xoff</p>
 
       <h4>&nbsp;</h4>
 
       <h4>End Of Line:</h4>
 
       <p ng-repeat="EOL in EOLS">
-        <input type="radio" name="EOL" ng-model="defaults.EOL" value="{{EOL.value}}"/> {{EOL.label}}
+        <input type="radio" name="EOL" ng-model="settings.EOL" value="{{EOL.value}}"/> {{EOL.label}}
       </p>
     </div>
     <div class="span2">
-      <button onclick='T.write("ID?\n")'>Get TEK ID</button><br />
-      <button onclick='T.write("*IDN?\n")'>Get GPIB ID</button><br />
-      <button onclick='T.write("RS232?\n")'>Get RS232</button>
-      <button onclick='T.write("RS232:BAUd?\n")'>Get Baudrate</button>
-      <button onclick='T.write("RS232:CONTROl:RTS?\n")'>RTS / CTS</button>
-      <button onclick='T.write("RS232:HARDFlagging?\n")'>HARD flagging</button>
+      <button onclick='T.write("ID?")'>Get TEK ID</button><br />
+      <button onclick='T.write("*IDN?")'>Get GPIB ID</button><br />
+      <button onclick='T.write("RS232?")'>Get RS232</button>
+      <button onclick='T.write("RS232:BAUd?")'>Get Baudrate</button>
+      <button onclick='T.write("RS232:CONTROl:RTS?")'>RTS / CTS</button>
+      <button onclick='T.write("RS232:HARDFlagging?")'>HARD flagging</button>
     </div>
   </div>
   <div class="row">
-    <button id="conn-refresh" ng-click="getPorts()">Refresh</button>
     <button id="conn-connect" ng-click="connect()">Connect</button>
     <button id="conn-close" ng-click="close()">Close</button>
   </div>
