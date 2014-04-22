@@ -3,6 +3,7 @@ angular
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/connection', { templateUrl: 'connection.html', controller: connectionCntrll })
+      .when('/commands', { templateUrl: 'commands.html', controller: commandsCntrll })
       .when('/main', { templateUrl: 'banner.html', controller: bannerCntrll })
       .otherwise({redirectTo: '/main'});
     $locationProvider
